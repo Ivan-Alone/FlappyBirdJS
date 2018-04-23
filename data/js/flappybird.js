@@ -357,10 +357,15 @@ window.addEventListener("keypress", function (event) {
 	}
 }, true);
 
+var isMobile = false;
+
 window.addEventListener("touchstart", function (event) {
+	isMobile = true;
 	kickBird();
 }, true);
 
 window.addEventListener("click", function (event) {
-	kickBird();
+	if (!isMobile) {
+		kickBird();
+	}
 }, true);
