@@ -1,0 +1,137 @@
+@font-face {
+	font-family: 'Impact';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Impact Regular'), local('Impact-Regular'), local('Impact'), url('../fonts/ImpactRegular.ttf');
+}
+* {
+	margin: 0;
+	padding: 0;
+	user-select: none;
+	-moz-user-select: none;
+}
+body {
+	background-color: #DED895;
+}
+.ContainerFrame {
+	width: 640px;
+	height: 800px;
+	position: relative;
+	margin: auto;
+}
+.GameWindow {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: block;
+	background: url('../images/flappy.png') #4EC0CA;
+}
+.GameCenter {
+	width: 100%;
+	height: 720px;
+	display: block;
+	background: url('../images/flappyOverlay.png');/*#08c;*/
+}
+.Bird {
+	width: 51px;
+	height: 36px;
+	position: absolute;
+	margin-top: -19px;
+	margin-left: -23px;
+	background-image: url('../images/bird.png');
+	background-repeat: no-repeat;
+}
+.HitBox {
+	width: 1px;
+	height: 1px;
+	margin-left: 50%;
+	top: 360px;
+	position: relative;
+}
+.GameStart {
+	width: 100%;
+	height: 100%;
+	display: block;
+	position: absolute;
+}
+.GameControls {
+	display: block;
+	position: relative;
+	margin: auto;
+	top: 350px;
+}
+.GameStartButton {
+	display: block;
+	margin: auto;
+	position: relative;
+	width: 180px;
+	height: 48px;
+	text-align: center;
+	padding-top: 20px;
+	background: #f84;
+	font-family: Ubuntu;
+	color: #fff;
+	font-size: 16pt;
+	border: 2px solid #e73;
+	border-radius: 10px;
+	top: 323px;
+	opacity: 0.9;
+	cursor: pointer;
+	text-shadow: 1px 1px #d62, -1px 1px #d62, 1px -1px #d62, -1px -1px #d62;
+}
+.PipeOverlay {
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	height: 800px;
+	position: absolute;
+	background: url('../images/flappyRoad.png');
+}
+.PipeTest1 {
+	width: 100px;
+	height: 710px;
+	background-image: url('../images/pipe.png');
+	margin-left: -50px;
+	position: absolute;
+}
+.PipeTest2 {
+	width: 100px;
+	height: 710px;
+	background-image: url('../images/pipe.png');
+	margin-left: -50px;
+	position: absolute;
+	background-position-y: -710px;
+}
+.PipeControler {
+	display: inline-block;
+	position: absolute;
+	width: 0px;
+	height: 720px;
+}
+.DrawableHitbox {
+	display: block;
+	outline: 1px solid #000ffc;
+	position: absolute;
+	z-index: 300;
+	color: #000ffc;
+	overflow: hidden;
+	word-break: break-all;
+}
+.ScoreBoard {
+	top: 75px;
+	font-size: 70pt;
+	width: 100%;
+	height: 150px;
+	display: block;
+	position: absolute;
+	text-align: center;
+	font-family: Impact;
+	color: #FFFFFF;
+	text-shadow: 5px 5px #000000, -5px 5px #000000, 5px -5px #000000, -5px -5px #000000, 0px 7px #000000, 0px -7px #000000, 7px 0px #000000, -7px 0px #000000;
+}
+.GameLogo {
+	top: 215px;
+	display: block;
+	position: absolute;
+	left: calc(50% - 220px);
+}
