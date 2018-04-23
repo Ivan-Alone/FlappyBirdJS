@@ -17,9 +17,6 @@
 		<script src="data/js/flappybird.js"></script>
 	</head>
 	<body onload="tryResetContainer()">
-		<audio id="pointSound" src="data/audio/sfx_point.mp3"></audio>
-		<audio id="hitSound" src="data/audio/sfx_hit.mp3"></audio>
-		<audio id="dieSound" src="data/audio/sfx_die.mp3"></audio>
 		<div class="ContainerFrame">
 			<div id="GameWindow" class="GameWindow">
 				<div id="GameCenter" class="GameCenter">
@@ -30,6 +27,9 @@
 						<img class="GameLogo" alt="FlappyBird" src="data/images/logo.png" />
 						<div class="GameStartButton" onclick="runBird()">Start game!</div>
 						<img class="GameControls" alt="Press Space, click LMB or tap for controls" src="data/images/controls.png">
+						<div class="AudioSwitch" onclick="toggleAudio(this);">
+							<div class="AudioSwitchDynamic"></div>
+						</div>
 					</div>
 				</div>
 			</div>
