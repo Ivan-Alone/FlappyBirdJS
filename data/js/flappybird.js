@@ -16,14 +16,29 @@ function kill(thread) {
 
 function killAll() {
 	for (var id = 0; id < 10000; id++) {
-		kill(id);
+		if (id != thread_adaptiveWidth) {
+			kill(id);
+		}
+	}
+}
+
+var audioEnabled = true;
+
+function toggleAudio(element) {
+	audioEnabled = !audioEnabled;
+	for (var i = 0; i < element.childNodes.length; i++) {
+		if (element.childNodes[i].className == 'AudioSwitchDynamic') {
+			element.childNodes[i].style.backgroundImage = 'url(\'data/images/'+(audioEnabled ? 'sound' : 'mute')+'.png\')';
+		}
 	}
 }
 
 function playSound(sound) {
-	var audioAPI = new Audio();
-	audioAPI.src = 'data/audio/sfx_'+sound+'.mp3';
-	audioAPI.autoplay = true;
+	if (audioEnabled) {
+		var audioAPI = new Audio();
+		audioAPI.src = 'data/audio/sfx_'+sound+'.mp3';
+		audioAPI.autoplay = true;
+	}
 }
 
 function modHtmlPos(pos) {
@@ -36,13 +51,14 @@ function rand(min, max) {
 }
 
 function tryResetContainer() {
-	var c = document.getElementsByClassName('ContainerFrame');
-	if (screenWidth == 0) {
-		screenWidth = c[0].parentNode.clientWidth;
-	}
-	for (var i = 0; i < c.length; i++) {
-		c[i].style.width = screenWidth;
-	}
+	var body = document.getElementsByClassName('ContainerFrame');
+	thread_adaptiveWidth = setInterval(function() {
+		screenWidth = body[0].parentNode.clientWidth;
+		
+		for (var i = 0; i < body.length; i++) {
+			body[i].style.width = screenWidth;
+		}
+	}, 100);
 }
 
 /*    <Settings>   */
@@ -87,6 +103,7 @@ var thread_pipesUpdater = -1;
 var thread_gameplayController = -1;
 var thread_birdFlyTicker = -1;
 var thread_hiboxes_All = -1;
+var thread_adaptiveWidth = -1;
 
 var score = 0;
 
@@ -95,12 +112,6 @@ var visiblePipes = [];
 var visitedPipes = [];
 
 var pipesTimer = 0;
-
-var pointEvent = new Event('point');
-var hitEvent = new Event('hit');
-var dieEvent = new Event('die');
-
-var audi = [];
 
 function genaratePipes(count) {
 	pipes = [];
@@ -156,8 +167,6 @@ function outliner(element){
 }
 
 function runBird() {
-	audi = [document.getElementById('pointSound'), document.getElementById('hitSound'), document.getElementById('dieSound')];
-
 	genaratePipes(10000);
 	
 	score = 0;
@@ -186,11 +195,7 @@ function runBird() {
 	if (useFancyGraphics) {
 		var bTimer = 0;
 		var deadTimer = 0;
-		var birdPNG = [
-			'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'
-		];
+		
 		thread_birdFlyTicker = setInterval(function() {
 			if (started) {
 				if (!canControl) {
@@ -198,7 +203,8 @@ function runBird() {
 					bird.style.transform = 'rotate('+deadTimer+'deg)';
 					deadTimer += 3;		
 				} else {
-					bird.childNodes[0].style.backgroundImage = "url('data:image/png;base64,"+birdPNG[Math.round(bTimer)]+"')";
+					bird.childNodes[0].style.backgroundImage = "url('data/images/bird"+Math.round(bTimer)+".png')";
+					bird.style.transform = '';
 					bTimer+=0.1;
 					if (bTimer > 2) bTimer = 0;
 					bird.style.transform = '';
@@ -219,7 +225,7 @@ function runBird() {
 		// Border
 		if (position >= 360) {
 			if (canControl) {
-				window.dispatchEvent(hitEvent);
+				playSound('hit');
 			}
 			bird.childNodes[0].style.backgroundImage = "url('data/images/birdDead.png')";
 			position = 360;
@@ -282,32 +288,34 @@ function runBird() {
 		visiblePipes.forEach(function(pipe, id, list) {
 			if (-49-18+birdCenterSlide < pipe[1] && pipe[1] < 49+18+birdCenterSlide) {
 				
-				if (pipe[1] < 30 && visitedPipes.indexOf(pipe[2]) === -1) {
-					score = pipe[2]+1;
-					visitedPipes[visitedPipes.length] = pipe[2];
-					window.dispatchEvent(pointEvent);
-				}
-				
-				if ((position < (pipe[0] - (90 - 18)) || position > (pipe[0] + (90 - 18))) && !noClip) {
-					if (useFancyGraphics) {
-						document.getElementById('CtrlPlayOverlay').outerHTML += '<div class="GameStart" id="FlashLight" style="background-color: rgba(255,255,255,0.8);"></div>';
-					}
-					
-					window.dispatchEvent(hitEvent);
-					setTimeout(function(){
+				if (position < (pipe[0] - (90 - 18)) || position > (pipe[0] + (90 - 18))) {
+					if (!noClip) {
 						if (useFancyGraphics) {
-							document.getElementById('FlashLight').outerHTML = '';
+							document.getElementById('CtrlPlayOverlay').outerHTML += '<div class="GameStart" id="FlashLight" style="background-color: rgba(255,255,255,0.8);"></div>';
 						}
-						window.dispatchEvent(dieEvent);
-					}, 75);
-					
-					canControl = false;
-					time = 0;
-					modUpTime = 1;
-					kill(thread_gameplayController);
-					thread_gameplayController = setInterval(function(){
-						bird.style.top = modHtmlPos(position);
-					}, 20);
+						
+						playSound('hit');
+						setTimeout(function(){
+							if (useFancyGraphics) {
+								document.getElementById('FlashLight').outerHTML = '';
+							}
+							playSound('die');
+						}, 75);
+						
+						canControl = false;
+						time = 0;
+						modUpTime = 1;
+						kill(thread_gameplayController);
+						thread_gameplayController = setInterval(function(){
+							bird.style.top = modHtmlPos(position);
+						}, 20);
+					}
+				} else {
+					if (pipe[1] < 30 && visitedPipes.indexOf(pipe[2]) === -1) {
+						score = pipe[2]+1;
+						visitedPipes[visitedPipes.length] = pipe[2];
+						playSound('point');
+					}
 				}
 				
 				if (debugMode) {
@@ -355,19 +363,4 @@ window.addEventListener("touchstart", function (event) {
 
 window.addEventListener("click", function (event) {
 	kickBird();
-}, true);
-
-window.addEventListener("point", function () {
-	audi[0].currentTime = 0;
-	audi[0].play();
-}, true);
-
-window.addEventListener("hit", function () {
-	audi[1].currentTime = 0;
-	audi[1].play();
-}, true);
-
-window.addEventListener("die", function () {
-	audi[2].currentTime = 0;
-	audi[2].play();
 }, true);
