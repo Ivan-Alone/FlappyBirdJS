@@ -331,7 +331,12 @@ function runBird() {
                 bird = document.getElementById('HitBox');
             }
             kill(thread_hiboxes_All);
-            thread_hiboxes_All = setInterval(function(){outliner(document.body, true);}, 50);
+            thread_hiboxes_All = setInterval(function(){
+				outliner(document.body, true);
+				if (showFPS) {
+					fps++;
+				}
+			}, threadsUpdateTime);
         }
         
         thread_physicsEngine = setInterval(function() {
@@ -485,7 +490,7 @@ function runBird() {
                 var timerOne = new Date();
                 if (timerOne - fpsTime >= 1000) {
                     fpsTime = timerOne;
-                    fpsScorer.innerHTML = fps / (useFancyGraphics ? 4 : 2);
+                    fpsScorer.innerHTML = fps / (useFancyGraphics ? 4+(debugMode?1:0) : 2+(debugMode?1:0));
                     fps = 0;
                 } 
 			}, 500);
