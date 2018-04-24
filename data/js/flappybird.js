@@ -52,7 +52,7 @@ function playSound(sound) {
     var pipesStartDelta = 1000;
 
     var noClip = false;
-    var useFancyGraphics = false;
+    var useFancyGraphics = true;
     var debugMode = false;
     
     var backgroundPlainsSpeed = 1.5;
