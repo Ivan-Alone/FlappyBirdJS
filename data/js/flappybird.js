@@ -33,11 +33,20 @@ function toggleAudio(element) {
     }
 }
 
+var sounds_distr = [
+
+];
+
 function playSound(sound) {
     if (audioEnabled) {
-        var audioAPI = new Audio();
-        audioAPI.src = "data:audio/mp3;base64,"+sounds[sound];//'data/audio/sfx_'+sound+'.mp3';
-        audioAPI.autoplay = true;
+        if (sounds_distr[sound] == undefined) {
+            sounds_distr[sound] = [];
+            for (var i = 0; i < 10; i++) {
+                sounds_distr[sound][i] = new Audio();
+                sounds_distr[sound][i].src = 'data/audio/sfx_'+sound+'.mp3';
+            }
+        }
+        sounds_distr[sound][rand(0,9)].play();
     }
 }
 
